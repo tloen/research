@@ -1,0 +1,253 @@
+\documentclass[11pt]{extarticle}
+
+  %Use wide margins, but not quite so wide as fullpage.sty
+  \marginparwidth 0.3in 
+  \oddsidemargin 0.1in 
+  \evensidemargin 0.1in 
+  \marginparsep 0.25in
+  \topmargin 0.25in
+  \textwidth 6in \textheight 8 in
+  %That's about enough definitions
+  
+  \usepackage{amsmath,amsfonts,amsthm,amssymb,multirow,xfrac}
+  \usepackage{upgreek}
+  \usepackage{siunitx}
+  \usepackage{listings}
+  \usepackage{tikz}
+  \usetikzlibrary{automata,positioning}
+  \usepackage{natbib}
+  \usepackage{enumitem}
+  \usepackage{mathtools,xfrac}
+  %\usepackage{geometry} % Commented by Adi
+  \sisetup{per-mode=fraction}
+  \sisetup{fraction-function=\sfrac}
+  \usepackage[in]{fullpage}
+  \usepackage{subcaption}
+  \usepackage{ulem}
+  \usepackage{xcolor}
+  
+  \usepackage{algorithmicx}
+  \usepackage[noend]{algpseudocode}
+  
+  \DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+  \DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+  
+  \newcount\colveccount
+  \newcommand*\colvec[1]{
+          \global\colveccount#1
+          \begin{pmatrix}
+          \colvecnext
+  }
+  \def\colvecnext#1{
+          #1
+          \global\advance\colveccount-1
+          \ifnum\colveccount>0
+                  \\
+                  \expandafter\colvecnext
+          \else
+                  \end{pmatrix}
+          \fi
+  }
+  
+  
+  \newcommand{\Tau}{\mathrm{T}}
+  \newcommand{\vect}[1]{\boldsymbol{#1}}
+  \newcommand{\Mod}[1]{\ (\text{mod}\ #1)}
+  
+  \newcommand{\Ex}[1]{{\mathbb E}\left[#1\right]}
+  \newcommand{\Var}[1]{\mathrm{Var}\left(#1\right)}
+  \newcommand{\Cov}[1]{\mathrm{Cov}\left(#1\right)}
+  \renewcommand{\Pr}[1]{\mathrm{Pr}\left[#1\right]}
+  \DeclareMathAlphabet\bfcal{OMS}{cmsy}{b}{n}
+  
+  \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+  \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+  
+  \DeclareMathOperator*{\argmin}{arg\,min}
+  \DeclareMathOperator*{\argmax}{arg\,max}
+  \DeclareMathOperator*{\maximize}{maximize}
+  \DeclareMathOperator*{\minimize}{minimize}
+  
+  \newcommand\restr[2]{{% we make the whole thing an ordinary symbol
+    \left.\kern-\nulldelimiterspace % automatically resize the bar with \right
+    #1 % the function
+    \vphantom{\big|} % pretend it's a little taller at normal size
+    \right|_{#2} % this is the delimiter
+  }}
+  
+  \DeclareMathOperator{\Span}{Span}
+  \DeclareMathOperator{\Dim}{dim}
+  \DeclareMathOperator{\Rank}{Rank}
+  \DeclareMathOperator{\Image}{Im}
+  \DeclareMathOperator{\im}{im}
+  \DeclareMathOperator{\Null}{Ker}
+  \DeclareMathOperator{\rref}{rref}
+  \newcommand{\pprime}{\second}
+  \DeclareMathOperator{\sgn}{sgn}
+  \DeclareMathOperator{\adj}{adj}
+  \DeclareMathOperator{\hess}{Hess}
+  \DeclareMathOperator{\Tr}{Tr}
+  \DeclareMathOperator{\Endo}{End}
+  \DeclareMathOperator{\Auto}{Aut}
+  \DeclareMathOperator{\Tors}{Tor}
+  \DeclareMathOperator{\Hom}{Hom}
+  
+  \def \imp {\rightarrow}
+  \def \qed {\hfill $\Box$}
+  \def \R {{\mathbb R}}
+  \def \sR {{\mathcal R}}
+  \def \E {{\mathbb E}}
+  \def \eps {\varepsilon}
+  \def \N {{\mathbb N}}
+  \def \Z {{\mathbb Z}}
+  \def \homeo {{\approx}}
+  
+  \newtheorem{theorem}{Theorem}
+  \newtheorem{example}{Example}
+  \newtheorem{lemma}{Lemma}
+  \newtheorem{corollary}{Corollary}
+  \newtheorem{definition}{Definition}
+  \newtheorem{note}{Note}
+  \newtheorem{prop}{Proposition}
+  
+  
+  %%%%% Adi's formatting additions for feedback %%%%%
+  
+  %\usepackage[paperwidth=275.9mm, paperheight=279.4mm]{geometry} 
+  
+  \usepackage[colorinlistoftodos, textwidth=65mm, shadow]{todonotes}
+  
+  %\setlength{\oddsidemargin}{35mm}
+  %\setlength{\evensidemargin}{35mm}
+  %\setlength{\voffset}{-1in}
+  %\setlength{\hoffset}{-1in}
+  %\setlength{\textwidth}{156mm}
+  %\setlength{\topmargin}{4mm}
+  %\setlength{\headheight}{10mm}
+  %\setlength{\headsep}{12mm}
+  %\setlength{\topskip}{0mm}
+  %\setlength{\textheight}{228mm}
+  
+  %\setlength{\evensidemargin}{95mm}
+  
+  %%%%% End of Adi's formatting additions %%%%%
+  
+  \begin{document}
+  
+  %%%%% Eric's extra stuff %%%%%
+  \newcommand{\sg}[1]{\textcolor{red}{[{\textit{#1}}]}}
+  \newcommand{\replace}[2]{\textcolor{red}{\sout{#1} #2}}
+  \newcommand{\delet}[1]{\textcolor{red}{\sout{#1}}}
+  \newcommand{\add}[1]{\textcolor{red}{#1}}
+  %%%%% End Eric's extra stuff %%%%%
+  
+  %% Begin Eric's font stuff
+  \fontfamily{bch}\selectfont
+  %% End Eric's font stuff
+  
+  \advance\day by -1
+  \author{Eric Wang}
+  \title{Learning to sort: an overview}
+  \maketitle
+
+  Here's the problem:
+  \begin{itemize}
+    \item We have a set of objects, $X$.
+    \item $X$ is totally ordered by the relation $\prec$.
+    \item We are also given a set of \textit{rankings}. As we mentioned during our first meeting, we can imagine each ranking is an input-output pair $(X^{(i)}, X^{(i)}_{sorted})$, where 
+      \begin{enumerate}
+        \item $X^{(i)} \subset X$, and
+        \item $X^{(i)}_{sorted}$ is $X^{(i)}$, but ordered according to $\prec$.
+      \end{enumerate}
+    \item Any algorithm that maps this input to this output should probably be invariant to permutations of the input. Consequently, all the algorithms we've seen embed single examples in some other space $Y$, such that subsets of $Y$ have some kind of natural ordering. 
+      \begin{enumerate}
+        \item $Y = \R$: Ranknet and its descendants try to learn an embedding $f:X \longrightarrow \R$ that preserves the order of $X$: 
+        $$x_i \prec x_j \Longleftrightarrow f(x_i) < f(x_j).$$
+        \item $Y = \R^{n}$: The Gumbel-Sinkhorn learning algorithm tries to learn a function $f:X \longrightarrow \R^{n}$, where $n$ is the number of entries to be ranked. When $n$ of these are taken together, they parameterize a distribution over permutations whose mode is supposed to sort $X$ according to $\prec$.
+      \end{enumerate}
+    \item The problem, then, is backpropagating information about the relations between elements of $X$ into the training of the embedding $f$.
+    \item To do this, we need a loss function 
+
+    \item How should this embedding be trained? 
+    \item One approach is RankNet, which trains this embedding with stochastic gradient descent on pairs of elements $x_i, x_j \in X$. RankNet assigns probabilistic interpretations to $f$ and penalizes it with cross-entropy loss. The RankNet algorithm works on any model differentiable with respect to its parameters.
+    \item However, a few things are lost when we train with just two elements at a time.
+
+    \item But the structure of this input is misleading. 
+    \begin{enumerate}
+      \item Any sorting algorithm should be invariant to the order of $X^{(i)}$, so all the information you need for training is contained in $X^{(i)}_{sorted}$.
+      \item All the information you need for testing is contained in $X^{(i)}$.
+    \end{enumerate}
+  \end{itemize}
+
+  Gumbel-Softmax:
+  \begin{itemize}
+    \item Say you have a dataset $\mathcal D$ and a latent variable $Z$ generating that dataset.  
+
+    \item $Z$'s distribution is parameterized by $\phi$: 
+    $$z \sim p_\phi(z)$$
+    
+    \item And let $f(z)$ represent the negative log-likelihood function of $p(z, \mathcal D)$. (Suppose for now that $f$ is fixed.) We want to minimize $\Ex{f(z)}$ given $\phi$. How do we do this?
+    
+    \item $\nabla_\phi \E_{z \sim p_\phi(z)} \left[f(z)\right]$ is intractable. Butf if we reparameterize $z$ as $g(\epsilon, \phi)$ where $\epsilon$ is a fixed ``noise'' random variable, we can work wonders!
+
+    \item $\E_{\epsilon \sim p(\epsilon)} \left[f(g(\epsilon, \phi))\right] = \E_{\epsilon \sim p(\epsilon)} \left[\nabla_\phi f(g(\epsilon, \phi))\right]$
+
+    \item We can estimate this with Monte Carlo.
+
+    \item Okay, cool. Now we have a trick that lets us find the parameters $\phi$ that maximize the expected log-likelihood of the data. That is, it helps us choose the distribution in our $p_\phi$-space that best approximates the true one.
+
+    \item But now what if $Val(Z) = D$, a discrete subset of $\R$?
+
+    \item How can we evaluate $\nabla_\phi f(g(\epsilon, \phi))$ when $g: (\phi, \epsilon) \mapsto D$ can't possibly be differentiable?
+
+    \item Answer: the Gumbel-Softmax trick. 
+
+    \item Gumbel is the random variable that enables the probability distribution to exist.
+
+    \item Softmax allows us to adjust our distribution, between temperature 0 (no gradients, exactly one-hotted $X$) and temperature $\infty$ (a poor approximation to $X$, but crazy gradients).
+    
+    \item Let $|D| = K$. The probability simplex over $D$ is $\Delta^{K - 1}$ of $K$-dimensional vectors whose components are nonnegative and sum to 1. 
+
+    \item Gumbel-softmax transforms $X \in D$, a discrete variable, into $X^\tau \in \Delta^{K - 1}$. ($\tau$ is the temperature parameter.)
+
+    \item It is parameterized by the concentration parameters $\alpha_i$, and is continuous/differentiable in each! So if $\alpha$ is a function of something else, we can still maximize the likelihood given a discrete distribution over $D$!
+
+    \item (Why do we care, though? $\max$ is already differentiable in terms of its inputs.)
+
+  \end{itemize}
+
+  The architecture
+  \begin{itemize}
+    \item Ermon's theorem: let $w : \Sigma \longrightarrow \R^+$ and let $w'(\sigma) = \log w(\sigma) + \gamma_\sigma$, where $\gamma \in \R^{\Sigma}$ is a vector of samples drawn i.i.d. from $\mathrm{Gumbel}(0)$. Then
+    $$\Pr{
+      \forall \ell > k:
+      w'(\sigma^{(1)}) \geq \cdots \geq w'(\sigma^{(k)}) \geq w'(\sigma^{(\ell)}) 
+      }$$
+    is equal to 
+    $$\frac{w(\sigma^{(1)})}{Z}\frac{w(\sigma^{(2)})}{Z - w(\sigma^(1))}\cdots \frac{w(\sigma^{(k)})}{Z - \sum_{j = 1}^{k - 1} w(\sigma^{(j)})}.$$
+    Of course, $Z$ is the sum of the $w$.
+
+    \item Suppose we want to maximize this probability
+
+  \end{itemize}
+
+  Sorting networks:
+  \begin{itemize}
+    \item We want to learn on entire rankings, not just pairs.
+    \item We also want to use the top-k loss function, rather than penalizing inversions uniformly.
+    \item To do this, we can use Gumbel-Sinkhorn to 
+    \item We want a differentiable sorting network, so that we can propagate top-k costs back to the scoring algorithm.
+    \item I suspect that the costs parameterized by $k$ are not actually that different from the costs parameterized by $n$.
+    \item This is because the cost of sorting out the top $k$ elements are close to sorting the entire array.
+    \item A hard lower bound on the number of comparisons to do this is $n - \log \binom{n}{k}$.
+  \end{itemize}
+
+  Information Retrieval Measures:
+  \begin{itemize}
+    \item Historically, measures of information retrieval have been flat. For example, letting $l_i$ be the ``correct'' relevance label of the $i$th returned entry, the DCG is defined as
+    $$DCG@T = \sum_{i = 1}^T \frac{2^{l_i} - 1}{\log (1 + i)}$$
+    And the normalized DCG is:
+    $$NDCG@T = \frac{DCG@T}{\max DCG@T}$$
+  \end{itemize}
+\end{document}
+  
